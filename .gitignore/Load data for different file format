@@ -1,0 +1,20 @@
+sqoop import \
+> --connect jdbc:mysql://quickstart.cloudera:3306/retail_db \
+> --username retail_dba \
+> --password cloudera \
+> --table orders \
+> --target-dir /user/hive/warehouse/Aug_18/orders_import_text
+
+
+hive (default)> create table orders_import_text
+              > (order_id int,order_date string,order_customer_id int,order_status string)
+              > row format delimited fields terminated by ','
+              > stored as textfile
+              > location '/user/hive/warehouse/Aug_18/orders_import_text';
+
+
+create table orders_import_avro
+              > (order_id int,order_date string,order_customer_id int,order_status string)
+              > row format delimited fields terminated by ','
+              > stored as avro;
+hive (default)> insert into table orders_import_avro select * from orders_import_text;
