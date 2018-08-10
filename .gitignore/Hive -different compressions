@@ -1,0 +1,11 @@
+
+--compress data with defaultcodec
+
+set hive.exec.compress.output=true;
+create table orders_compress as select * from orders;
+
+--compress data with snappycodec
+
+set hive.exec.compress.output=true;
+set mapreduce.output.fileoutputformat.compress.codec=org.apache.hadoop.io.compress.SnappyCodec;
+create table orders_snappy as select * from orders;
